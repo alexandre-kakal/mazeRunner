@@ -43,4 +43,4 @@ function goRight() {
 document.querySelector("#go-up").onclick = goUp;
 document.querySelector("#go-down").onclick = goDown;
 document.querySelector("#go-right").onclick = goRight;
-document.querySelector("#go-up").onclick = goLeft;
+document.querySelector("#go-left").onclick = goLeft;
