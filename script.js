@@ -13,8 +13,16 @@ function cellInteract(x, y) {
   let currentHealth = getHearts();
   let cellContent = getCellContent(x, y);
   let monsterPower = getMonsterPower(x, y);
-  if (cellContent == LOOT) {
+  let treasureCount = getTreasures();
+
+  // faire une boucle while pour décrémenter treasure count
+  if (treasureCount > 0 && cellContent == LOOT) {
     loot(x, y);
+    treasureCount--;
+  }
+
+  if (treasureCount == 0) {
+    alert("Victoire bg");
   }
   if (cellContent == HEART && currentHealth < 5) {
     currentHealth++;
@@ -34,48 +42,56 @@ function goUp() {
   let x = heroPosition.x;
   let y = heroPosition.y;
   let wall = getWalls(x, y);
-  if (wall.north) {
-    y++;
+  if (!wall.north) {
+    y--;
+    setHeroPosition(x, y);
+    cellInteract(x, y);
+    if (isFrozen(x, y)) {
+      goUp();
+    }
   }
-  y--;
-  cellInteract(x, y);
-  setHeroPosition(x, y);
 }
 
 function goDown() {
   let x = heroPosition.x;
   let y = heroPosition.y;
   let wall = getWalls(x, y);
-  if (wall.south) {
-    y--;
+  if (!wall.south) {
+    y++;
   }
-  y++;
-  cellInteract(x, y);
   setHeroPosition(x, y);
+  cellInteract(x, y);
+  if (isFrozen(x, y)) {
+    goDown();
+  }
 }
 
 function goLeft() {
   let x = heroPosition.x;
   let y = heroPosition.y;
   let wall = getWalls(x, y);
-  if (wall.west) {
-    x++;
+  if (!wall.west) {
+    x--;
   }
-  x--;
-  cellInteract(x, y);
   setHeroPosition(x, y);
+  cellInteract(x, y);
+  if (isFrozen(x, y)) {
+    goLeft();
+  }
 }
 
 function goRight() {
   let x = heroPosition.x;
   let y = heroPosition.y;
   let wall = getWalls(x, y);
-  if (wall.east) {
-    x--;
+  if (!wall.east) {
+    x++;
   }
-  x++;
-  cellInteract(x, y);
   setHeroPosition(x, y);
+  cellInteract(x, y);
+  if (isFrozen(x, y)) {
+    goRight();
+  }
 }
 
 document.querySelector("#go-up").onclick = goUp;
